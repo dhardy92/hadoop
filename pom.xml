@@ -14,8 +14,8 @@
 
         <!-- runtime deps versions -->
         <commons-logging.version>1.1.1</commons-logging.version>
-        <hadoop-core.version>1.2.1</hadoop-core.version>
-        <mesos.version>0.14.0-20130806</mesos.version>
+        <hadoop-core.version>2.0.0-mr1-cdh4.1.2</hadoop-core.version>
+        <mesos.version>0.14.2</mesos.version>
         <protobuf.version>2.4.1</protobuf.version>
         <metrics-graphite.version>3.0.1</metrics-graphite.version>
         <metrics-jvm.version>3.0.1</metrics-jvm.version>
@@ -24,6 +24,13 @@
         <!-- test deps versions -->
         <junit.version>4.11</junit.version>
         <mockito.version>1.9.5</mockito.version>
+
+        <!-- debian requirements -->
+        <jdeb.version>1.0.1</jdeb.version>
+        <maven-dependency-plugin.version>2.6</maven-dependency-plugin.version>
+        <debian.package>${project.artifactId}</debian.package>
+        <deb.lib.directory>/usr/lib/${debian.package}</deb.lib.directory>
+
     </properties>
 
     <!-- TODO(benh): Remove repository once we've published a JDK6 JAR. -->
@@ -41,6 +48,10 @@
             <id>clojars.org</id>
             <url>http://clojars.org/repo</url>
         </repository>
+        <repository>
+            <id>cloudera</id>
+            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -53,6 +64,12 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-core</artifactId>
             <version>${hadoop-core.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>2.0.0-cdh4.1.2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -152,6 +169,27 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>jdeb</artifactId>
+                <groupId>org.vafer</groupId>
+                <version>${jdeb.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jdeb</goal>
+                        </goals>
+                        <configuration>
+                            <dataSet>
+                                <data>
+                                    <src>${project.build.directory}/${project.build.finalName}.jar</src>
+                                    <dst>${deb.lib.directory}/${project.artifactId}.jar</dst>
+                                    <type>file</type>
+                                </data>
+                            </dataSet>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

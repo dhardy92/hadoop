@@ -87,7 +87,7 @@ public class MesosTracker {
                 }
                 MesosTracker.this.jobs.remove(id);
               }
-            } catch (java.io.IOException e) {
+            } catch (java.lang.Exception e) {
               LOG.warn("Unable to get job status", e);
             }
           }
