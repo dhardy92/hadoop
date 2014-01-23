@@ -1,0 +1,9 @@
+Package: [[name]]
+Version: [[version]]
+Section: misc
+Priority: optional
+Architecture: all
+Depends: java-runtime-headless, libmesos=[[mesos.version]]
+Maintainer: Damien Hardy <dhardy@viadeoteam.com>
+Description: Mesos Hadoop MapReduce plugin
+Distribution: [[debian.distribution]]
